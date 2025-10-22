@@ -3,7 +3,7 @@ from sqlmodel import Session
 from datetime import datetime
 from app.models.feed import Feed
 
-def fetch_rss(url: str, session: Session):
+def fetch_rss(url: str, session: Session, topic: str = "General"):
     """
     Fetches latest posts from an RSS feed and stores them in the database.
     """
@@ -17,6 +17,7 @@ def fetch_rss(url: str, session: Session):
             link=entry.get("link", ""),
             summary=entry.get("summary", ""),
             published_at=datetime.utcnow(),
+            topic=topic,  # 🔹 store topic name
         )
         session.add(feed)
         feeds.append(feed)
@@ -25,7 +26,7 @@ def fetch_rss(url: str, session: Session):
     return feeds
 
 
-def fetch_youtube(channel_id: str, session: Session):
+def fetch_youtube(channel_id: str, session: Session, topic: str = "General"):
     """
     Fetches the latest 10 videos from a YouTube channel (using public RSS feed).
     """
@@ -40,6 +41,7 @@ def fetch_youtube(channel_id: str, session: Session):
             link=entry.get("link", ""),
             summary=entry.get("summary", ""),
             published_at=datetime.utcnow(),
+             topic=topic,  # 🔹 store topic name
         )
         session.add(feed)
         feeds.append(feed)

@@ -1,9 +1,4 @@
-from sqlmodel import Session
-from app.services.fetcher import fetch_rss
-from app.utils.database import engine
-
-url = "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
-
-with Session(engine) as session:
-    feeds = fetch_rss(url, session)
-    print(f"{len(feeds)} items saved.")
+from sqlmodel import SQLModel, create_engine
+from app.models.feed import Feed
+engine = create_engine("sqlite:///database.db")
+SQLModel.metadata.create_all(engine)

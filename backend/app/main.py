@@ -8,10 +8,20 @@ from app.services.auto_fetcher import start_scheduler
 start_scheduler()
 
 from app.routes import feed_source
-
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CreatorPulse API", version="0.1")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["http://127.0.0.1:5173"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 
 # include base routes
 app.include_router(base.router)
